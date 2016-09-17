@@ -10,12 +10,9 @@
     {
         "node": ">=5"
     },
-    "peerDependencies":
-    {
-        "solfegejs"         : "2.x",
-    },
     "dependencies"  :
     {
+        "solfegejs"         : "2.x",
         "config-yaml"       : "^1.0.4"
     },
     "devDependencies":
@@ -35,12 +32,9 @@
     },
     "scripts"       :
     {
-        "test"             : "mocha --harmony --recursive --reporter spec --bail",
-        "watch"            : "babel --watch --out-dir lib lib-es6 --copy-files",
-        "compile"          : "babel --out-dir lib lib-es6 --copy-files",
-        "example-compile"  : "babel --out-dir example/lib example/lib-es6 --copy-files",
-        "example-start"    : "node --harmony example/lib/start.js",
-        "example-console"  : "node --harmony example/lib/console.js"
+        "watch"     : "babel --watch --out-dir lib lib-es6 --copy-files",
+        "compile"   : "babel --out-dir lib lib-es6 --copy-files",
+        "console"   : "node console.js"
     },
     "babel": {
         "presets": ["stage-0"],

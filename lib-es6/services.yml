@@ -1,0 +1,5 @@
+services:
+    manga_downloader_cron:
+        class: "Command/CronCommand"
+        tags:
+            - { name: "solfege.console.command" }
