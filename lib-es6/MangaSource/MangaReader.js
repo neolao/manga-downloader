@@ -12,7 +12,8 @@ export default class MangaReader
      *
      * @param   {string}    mangaId             Manga ID
      * @param   {uint32}    chapter             Chapter number
-     * @parm    {string}    destinationPath     Destination path
+     * @param   {string}    destinationPath     Destination path
+     * @return  {bool}                          true if the chapter is downloaded, false otherwise
      */
     *downloadChapter(mangaId:string, chapter:uint32, destinationPath:string)
     {
@@ -24,6 +25,11 @@ export default class MangaReader
             }
             page++;
         }
+
+        if (page > 1) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -33,6 +39,7 @@ export default class MangaReader
      * @param   {uint32}    chapter             Chapter number
      * @param   {uint32}    page                Page number
      * @param   {uint32}    destinationPath     Destination path
+     * @return  {bool}                          true if the page is downloaded, false otherwise
      */
     *downloadChapterPage(mangaId:string, chapter:uint32, page:uint32, destinationPath:string)
     {

@@ -23,10 +23,25 @@ export default class Downlader
     }
 
     /**
+     * Download a new chapter
+     */
+    *downloadNewChapter()
+    {
+        for (let mangaId in this.mangas) {
+            let nextChapter = yield this.getNextChapter(mangaId);
+            let isDownloaded = yield this.downloadChapter(mangaId, nextChapter);
+            if (isDownloaded) {
+                break;
+            }
+        }
+    }
+
+    /**
      * Downloader a manga chapter into the library
      *
      * @param   {string}    mangaId     Manga ID
      * @param   {uint32}    chapter     Chapter number
+     * @return  {bool}                  true if the chapter is downloaded, false otherwise
      */
     *downloadChapter(mangaId:string, chapter:uint32)
     {
@@ -56,7 +71,7 @@ export default class Downlader
         const normalizedChapter = printf("%03d", chapter);
         const destinationPath = `${this.libraryPath}/${mangaId}/${normalizedChapter}`;
         yield mkdirp(destinationPath);
-        yield source.downloadChapter(id, chapter, destinationPath);
+        return yield source.downloadChapter(id, chapter, destinationPath);
     }
 
     /**
@@ -100,5 +115,32 @@ export default class Downlader
         }
 
         return null;
+    }
+
+    /**
+     * Get the next chapter number
+     *
+     * @param   {string}    mangaId     Manga ID
+     * @return  {uint32}                Next manga chapter
+     */
+    *getNextChapter(mangaId:string)
+    {
+        const mangaPath = `${this.libraryPath}/${mangaId}`;
+
+        try {
+            const chapters = yield fs.readdir(mangaPath);
+            const lastChapter = chapters.pop();
+
+            // Check if the last chapter is empty
+            // If not, then the next chapter is the last chapter + 1
+            const chapterPath = `${mangaPath}/${lastChapter}`;
+            const pages = yield fs.readdir(chapterPath);
+            if (pages.length === 0) {
+                return parseInt(lastChapter);
+            }
+            return parseInt(lastChapter) + 1;
+        } catch (error) {
+            return 1;
+        }
     }
 }

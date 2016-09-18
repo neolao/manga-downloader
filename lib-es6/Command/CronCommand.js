@@ -38,6 +38,6 @@ export default class CronCommand
      */
     *execute()
     {
-        console.info("...");
+        yield this.downloader.downloadNewChapter();
     }
 }
