@@ -1,5 +1,30 @@
 services:
+    # cron command
     manga_downloader_cron:
         class: "Command/CronCommand"
+        arguments:
+            - "@manga_downloader"
         tags:
             - { name: "solfege.console.command" }
+
+    # Command: Load a manga chapter
+    manga_downloader_load_chapter:
+        class: "Command/LoadChapterCommand"
+        arguments:
+            - "@manga_downloader"
+        tags:
+            - { name: "solfege.console.command" }
+
+
+    # Main service
+    manga_downloader:
+        class: "Downloader"
+        arguments:
+            - "%library_path%"
+            - "%mangas%"
+        calls:
+            - [ addSource, ["mangareader", "@manga_downloader_source_mangareader"] ]
+
+    # Manga source: mangareader.net
+    manga_downloader_source_mangareader:
+        class: "MangaSource/MangaReader"

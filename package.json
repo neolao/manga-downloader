@@ -1,7 +1,7 @@
 {
     "name"          : "manga-downloader",
     "description"   : "Manga downloader",
-    "version"       : "0.0.1",
+    "version"       : "0.0.3",
     "author"        : "neolao <contact@neolao.com>",
     "repository"    : "https://github.com/neolao/manga-downloader.git",
     "license"       : "MIT",
@@ -13,7 +13,11 @@
     "dependencies"  :
     {
         "solfegejs"         : "2.x",
-        "config-yaml"       : "^1.0.4"
+        "co-fs"             : "1.2.0",
+        "mkdirp-then"       : "1.2.0",
+        "printf"            : "0.2.5",
+        "request"           : "2.75.0",
+        "request-promise"   : "4.1.1"
     },
     "devDependencies":
     {

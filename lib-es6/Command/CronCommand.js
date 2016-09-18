@@ -1,17 +1,36 @@
-import ContainerAwareCommand from "solfegejs/lib/bundles/Console/Command/ContainerAwareCommand";
-
 /**
  * Cron command
  */
-export default class CronCommand extends ContainerAwareCommand
+export default class CronCommand
 {
     /**
-     * Configure command
+     * Constructor
+     *
+     * @param   {Downloader}    downloader  Downloader service
      */
-    *configure()
+    constructor(downloader)
     {
-        this.setName("manga-downloader:cron");
-        this.setDescription("Command for the crontab");
+        this.downloader = downloader;
+    }
+
+    /**
+     * Get command name
+     *
+     * @return  {string}    Command name
+     */
+    getName()
+    {
+        return "manga-downloader:cron";
+    }
+
+    /**
+     * Get command description
+     *
+     * @return  {string}    Command description
+     */
+    getDescription()
+    {
+        return "Command for the crontab";
     }
 
     /**

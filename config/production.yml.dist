@@ -1,0 +1,12 @@
+library_path: "%main_directory_path%/library"
+
+mangas:
+    naruto:
+        title: Naruto
+        source: mangareader
+        id: naruto
+
+    fairy_tail:
+        title: Fairy Tail
+        source: mangareader
+        id: fairy-tail
