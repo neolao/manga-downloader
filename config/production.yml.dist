@@ -23,6 +23,16 @@ manga_downloader:
             source: mangareader
             id: the-gamer
 
+        boruto:
+            title: Boruto
+            source: mangareader
+            id: boruto
+
+        one_piece:
+            title: One Piece
+            source: mangareader
+            id: one-piece
+
 
     # Task handlers
     task_handlers:
@@ -36,7 +46,7 @@ manga_downloader:
 
     # Tasks
     tasks:
-        neolao:
+        john:
             handler: email
             email: john@kindle.com
             format: kindle_voyage
