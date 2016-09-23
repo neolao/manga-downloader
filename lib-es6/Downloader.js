@@ -1,5 +1,5 @@
 import printf from "printf";
-import fs from "co-fs";
+import { readdir } from "co-fs-extra";
 import mkdirp from "mkdirp-then";
 
 /**
@@ -10,13 +10,15 @@ export default class Downlader
     /**
      * Constructor
      *
-     * @param   {string}    libraryPath     Library path
-     * @param   {object}    mangas          Manga list
+     * @param   {string}        libraryPath     Library path
+     * @param   {object}        mangas          Manga list
+     * @param   {MangaResolver} mangaResolver   Manga resolver
      */
-    constructor(libraryPath:string, mangas)
+    constructor(libraryPath:string, mangas:Object, mangaResolver)
     {
         this.libraryPath = libraryPath;
         this.mangas = mangas;
+        this.mangaResolver = mangaResolver;
 
         // Initialize sources
         this.sources = new Map();
@@ -28,7 +30,7 @@ export default class Downlader
     *downloadNewChapter()
     {
         for (let mangaId in this.mangas) {
-            let nextChapter = yield this.getNextChapter(mangaId);
+            let nextChapter = yield this.mangaResolver.getNextChapter(mangaId);
             let isDownloaded = yield this.downloadChapter(mangaId, nextChapter);
             if (isDownloaded) {
                 break;
@@ -46,7 +48,7 @@ export default class Downlader
     *downloadChapter(mangaId:string, chapter:uint32)
     {
         // Get manga configuration
-        const mangaConfig = this.getMangaConfiguration(mangaId);
+        const mangaConfig = this.mangaResolver.getMangaConfiguration(mangaId);
         if (!mangaConfig) {
             throw new Error(`Manga "${mangaId}" is not configured`);
         }
@@ -68,27 +70,9 @@ export default class Downlader
         }
 
         // Download
-        const normalizedChapter = printf("%03d", chapter);
-        const destinationPath = `${this.libraryPath}/${mangaId}/${normalizedChapter}`;
+        const destinationPath = this.mangaResolver.getChapterPath(mangaId, chapter);
         yield mkdirp(destinationPath);
         return yield source.downloadChapter(id, chapter, destinationPath);
-    }
-
-    /**
-     * Get manga configuration
-     *
-     * @param   {string}    mangaId     Manga ID
-     * @return  {object}                Manga configuration
-     */
-    getMangaConfiguration(mangaId:string)
-    {
-        for (let mangaConfigurationId in this.mangas) {
-            if (mangaConfigurationId === mangaId) {
-                return this.mangas[mangaId];
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -115,32 +99,5 @@ export default class Downlader
         }
 
         return null;
-    }
-
-    /**
-     * Get the next chapter number
-     *
-     * @param   {string}    mangaId     Manga ID
-     * @return  {uint32}                Next manga chapter
-     */
-    *getNextChapter(mangaId:string)
-    {
-        const mangaPath = `${this.libraryPath}/${mangaId}`;
-
-        try {
-            const chapters = yield fs.readdir(mangaPath);
-            const lastChapter = chapters.pop();
-
-            // Check if the last chapter is empty
-            // If not, then the next chapter is the last chapter + 1
-            const chapterPath = `${mangaPath}/${lastChapter}`;
-            const pages = yield fs.readdir(chapterPath);
-            if (pages.length === 0) {
-                return parseInt(lastChapter);
-            }
-            return parseInt(lastChapter) + 1;
-        } catch (error) {
-            return 1;
-        }
     }
 }

@@ -1,12 +1,51 @@
-library_path: "%main_directory_path%/library"
+# Manga downloader settings
+manga_downloader:
+    # Library path
+    library_path: "%main_directory_path%/library"
 
-mangas:
-    naruto:
-        title: Naruto
-        source: mangareader
-        id: naruto
+    # Storage for the tasks
+    tasks_storage_path: "%main_directory_path%/tasks"
 
-    fairy_tail:
-        title: Fairy Tail
-        source: mangareader
-        id: fairy-tail
+    # Manga list
+    mangas:
+        naruto:
+            title: Naruto
+            source: mangareader
+            id: naruto
+
+        fairy_tail:
+            title: Fairy Tail
+            source: mangareader
+            id: fairy-tail
+
+        the_gamer:
+            title: The Gamer
+            source: mangareader
+            id: the-gamer
+
+
+    # Task handlers
+    task_handlers:
+        email:
+            type: smtp
+            email: "john@gmail.com"
+            login: "john"
+            password: "1234"
+            host: smtp.gmail.com
+            protocol: smtps
+
+    # Tasks
+    tasks:
+        neolao:
+            handler: email
+            email: john@kindle.com
+            format: kindle_voyage
+            frequency: 30
+            mangas:
+                - naruto
+                - fairy_tail
+
+
+# Kindlegen settings
+kindlegen:
+    path: "%main_directory_path%/bin/kindlegen"

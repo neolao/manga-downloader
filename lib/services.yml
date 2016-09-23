@@ -15,16 +15,63 @@ services:
         tags:
             - { name: "solfege.console.command" }
 
+    # Command: Execute a task
+    manga_downloader_execute_task:
+        class: "Command/ExecuteTaskCommand"
+        arguments:
+            - "@manga_downloader_task_manager"
+        tags:
+            - { name: "solfege.console.command" }
 
-    # Main service
+
+    # Manga resolver
+    manga_downloader_resolver:
+        class: "MangaResolver"
+        arguments:
+            - "%manga_downloader.library_path%"
+            - "%manga_downloader.mangas%"
+
+    # Downloader
     manga_downloader:
         class: "Downloader"
         arguments:
-            - "%library_path%"
-            - "%mangas%"
+            - "%manga_downloader.library_path%"
+            - "%manga_downloader.mangas%"
+            - "@manga_downloader_resolver"
         calls:
             - [ addSource, ["mangareader", "@manga_downloader_source_mangareader"] ]
 
     # Manga source: mangareader.net
     manga_downloader_source_mangareader:
         class: "MangaSource/MangaReader"
+
+    # Task manager
+    manga_downloader_task_manager:
+        class: "TaskManager"
+        arguments:
+            - "%manga_downloader.tasks%"
+            - "%manga_downloader.tasks_storage_path%"
+        calls:
+            - [ addHandler, ["email", "@manga_downloader_task_handler_email"]]
+
+    # Email task
+    manga_downloader_task_handler_email:
+        class: "TaskHandler/Email"
+        arguments:
+            - "%manga_downloader.task_handlers.email%"
+            - "@manga_downloader_converter"
+            - "@manga_downloader_resolver"
+
+    # Converter
+    manga_downloader_converter:
+        class: "Converter"
+        arguments:
+            - "@manga_downloader_resolver"
+        calls:
+            - [ addFormat, ["mobi", "@manga_downloader_converter_format_mobi"]]
+
+    # MOBI converter
+    manga_downloader_converter_format_mobi:
+        class: "FormatConverter/Mobi"
+        arguments:
+            - "@kindlegen"

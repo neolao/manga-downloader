@@ -1,4 +1,4 @@
-import fs from "co-fs";
+import { writeFile } from "co-fs-extra";
 import request from "request-promise";
 import printf from "printf";
 
@@ -61,7 +61,7 @@ export default class MangaReader
         const fileName = printf("%04d", page);
         const filePath = `${destinationPath}/${fileName}.jpg`;
         const image = yield request.get(imageUrl, {encoding: null});
-        yield fs.writeFile(filePath, image);
+        yield writeFile(filePath, image);
 
         console.log(imageUrl, "=>", filePath);
         return true;

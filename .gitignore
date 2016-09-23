@@ -41,3 +41,8 @@ config/production.yml
 
 # Library
 library
+
+# Tasks storage
+tasks
+
+bin
