@@ -18,10 +18,10 @@ manga_downloader:
             source: mangareader
             id: fairy-tail
 
-        the_gamer:
-            title: The Gamer
-            source: mangareader
-            id: the-gamer
+        #the_gamer:
+        #    title: The Gamer
+        #    source: scanmanga
+        #    id: The-Gamer-Chapitre-1_22167.html
 
         boruto:
             title: Boruto

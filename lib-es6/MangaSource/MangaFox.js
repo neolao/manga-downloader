@@ -95,7 +95,7 @@ export default class MangaFox
                 return body;
             });
 
-            let result = pageContent.match(/<img src="([^"]+)"/);
+            let result = pageContent.match(/<img src="([^"]+\.jpg)"/);
 
             if (result) {
                 return result[1];

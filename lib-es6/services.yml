@@ -41,6 +41,7 @@ services:
         calls:
             - [ addSource, ["mangareader", "@manga_downloader_source_mangareader"] ]
             - [ addSource, ["mangafox", "@manga_downloader_source_mangafox"] ]
+            - [ addSource, ["scanmanga", "@manga_downloader_source_scanmanga"] ]
 
     # Manga source: mangareader.net
     manga_downloader_source_mangareader:
@@ -49,6 +50,10 @@ services:
     # Manga source: mangafox.me
     manga_downloader_source_mangafox:
         class: "MangaSource/MangaFox"
+
+    # Manga source: scan-manga.com
+    manga_downloader_source_scanmanga:
+        class: "MangaSource/ScanManga"
 
     # Task manager
     manga_downloader_task_manager:

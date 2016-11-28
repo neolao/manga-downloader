@@ -82,7 +82,6 @@ export default class Email
                 selectedChapter = nextChapter;
                 break;
             }
-            console.log(`No chapter ${nextChapter} for ${mangaId}`);
         }
         if (!selectedMangaId || !selectedChapter) {
             return newTaskStorage;
