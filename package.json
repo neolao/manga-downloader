@@ -1,7 +1,7 @@
 {
     "name"          : "manga-downloader",
     "description"   : "Manga downloader",
-    "version"       : "1.0.0",
+    "version"       : "1.0.1",
     "author"        : "neolao <contact@neolao.com>",
     "repository"    : "https://github.com/neolao/manga-downloader.git",
     "license"       : "MIT",
